@@ -7,7 +7,6 @@ __pycache__/
 thesis_env/
 
 # Ephemeral Sandboxes (generated at runtime)
-sandbox_active/
 sandbox_root/
 
 # Secrets
