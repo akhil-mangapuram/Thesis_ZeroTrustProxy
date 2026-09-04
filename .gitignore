@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Virtual Environment
+thesis_env/
+
+# Ephemeral Sandboxes (generated at runtime)
+sandbox_active/
+sandbox_root/
+
+# Secrets
+.env
+
+# Generated evaluation results (not source)
+thesis_evaluation_results*.csv
+
+# IDE
+.vscode/
+.idea/
+

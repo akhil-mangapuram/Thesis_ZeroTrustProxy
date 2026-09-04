@@ -1,0 +1,31 @@
+# ==========================================
+# 1. Core LLM & Protocol Integration
+# ==========================================
+# Official Google GenAI SDK for accessing gemini-3.1-pro-preview
+google-genai>=0.2.0
+
+# Official Model Context Protocol SDK (includes FastMCP and client)
+mcp>=1.0.0
+
+# For securely loading your GEMINI_API_KEY from the .env file
+python-dotenv>=1.0.1
+
+# ==========================================
+# 2. Security & AST Parsing (Week 2)
+# ==========================================
+# An incredibly powerful SQL parser. We will use this in Week 2 
+# to build the AST (Abstract Syntax Tree) logic for the Zero-Trust Proxy 
+# to catch malicious DROP, ALTER, and PRAGMA commands (A4 Attacks).
+sqlglot>=23.0.0
+
+# ==========================================
+# 3. Phase IV: Statistical Evaluation (October)
+# ==========================================
+# For managing the N=100 evaluation dataset, logging latencies, 
+# and calculating Attack Success Rates (ASR) / False Positive Rates (FPR).
+pandas>=2.2.0
+openpyxl>=3.1.2
+
+# For running the required Chi-Square tests (block rates) 
+# and ANOVA tests (latency variance) during Phase IV.
+scipy>=1.13.0
