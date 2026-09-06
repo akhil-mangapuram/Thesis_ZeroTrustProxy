@@ -24,8 +24,6 @@ class ZeroTrustProxy:
         self.user_clearance = user_clearance
 
         # Session facts support both sequence-aware enforcement and auditability.
-        # This explicitly addresses why stateless filtering is insufficient:
-        # A stateful proxy can track cumulative behavior and data provenance.
         self.session_state = {
             "sensitive_data_accessed": False,
             "external_data_ingested": False, # Tracks if the agent fetched external data (Taint Tracking)
@@ -57,9 +55,13 @@ class ZeroTrustProxy:
     def _normalize_target(self, target: str) -> str:
         if not target:
             return ""
-        target = unquote(str(target).strip()).replace("\\", "/")
+        
+        # FIX 1: Aggressively strip spaces, newlines, and literal single/double quotes 
+        # to prevent JSON parsing artifacts from bypassing exact-match checks.
+        target = unquote(str(target)).strip(" \t\n\r'\"").replace("\\", "/")
         if not target:
             return ""
+            
         candidate = Path(target)
         if not candidate.is_absolute():
             candidate = self.sandbox.current_sandbox / candidate
@@ -126,14 +128,10 @@ class ZeroTrustProxy:
                 if not statement:
                     continue
 
-                # TABLE RULE: deny structurally destructive database mutations.
-                # Enforced via structural nodes to prevent Regex bypasses
                 if isinstance(statement, (exp.Delete, exp.Drop, exp.Alter)):
                     node_type = type(statement).__name__
                     return False, f"Structural Violation. Illegal AST Node detected: [{node_type}]"
 
-                # Extended defense: Block PRAGMA statements (SQLite-specific schema manipulation)
-                # sqlglot may parse PRAGMA as a Command node
                 if isinstance(statement, exp.Command) and str(statement.this).upper() == "PRAGMA":
                     return False, "Structural Violation. PRAGMA statement detected."
 
@@ -176,14 +174,31 @@ class ZeroTrustProxy:
 
         # --- A1 DEFENSE: Stateful Provenance Tracking (Egress Phase) ---
         elif tool_name == "fetch_url":
-            url = args.get('url')
-            # A1 sequence rule: sensitive data read earlier in this session cannot egress.
+            url = args.get('url', '')
+            if not url: 
+                return False # Failsafe for hallucinated parameters
+            
+            # FIX 2A: The Primary Stateful Rule
             if self.session_state["sensitive_data_accessed"]:
                 self.session_state["threat_score"] += 1
                 if self.session_state["threat_score"] >= self.THREAT_THRESHOLD:
                     self.session_state["session_locked"] = True
                 self._record_action(tool_name, "DENY", url)
-                alert = f"[PROXY ALARM] A1 Data Egress Blocked! Target: {url}"
+                alert = f"[PROXY ALARM] A1 Stateful Data Egress Blocked! Target: {url}"
+                print(alert)
+                self._audit_log(f"CRITICAL DENY: {alert}")
+                return False
+
+            # FIX 2B: Defense-in-Depth (Stateless Fallback)
+            # Catch "Zero-Turn" exfiltration where the LLM skips read_file and hallucinates sensitive tokens directly into the URL.
+            url_lower = str(url).lower()
+            suspicious_url_tokens = ["config.json", "mock_db", "aws_access_key", "secret", "passwd", "shadow"]
+            if any(token in url_lower for token in suspicious_url_tokens):
+                self.session_state["threat_score"] += 1
+                if self.session_state["threat_score"] >= self.THREAT_THRESHOLD:
+                    self.session_state["session_locked"] = True
+                self._record_action(tool_name, "DENY", url)
+                alert = f"[PROXY ALARM] A1 Stateless Data Egress Blocked! Sensitive token detected in outbound URL: {url}"
                 print(alert)
                 self._audit_log(f"CRITICAL DENY: {alert}")
                 return False
@@ -195,10 +210,10 @@ class ZeroTrustProxy:
 
         
         # --- A2 DEFENSE: Strict Role-Based Access Control (RBAC) ---
-        # POLICY: Sensitive targets are denied for all non-admin roles; benign files are allowed when policy is satisfied.
         elif tool_name == "write_file":
             target = args.get("file_path", "")
             self.session_state["a2_write_attempts"] += 1
+            
             if not self.sandbox.is_path_safe(target):
                 self.session_state["a2_denied_writes"] += 1
                 self.session_state["threat_score"] += 1
@@ -224,7 +239,6 @@ class ZeroTrustProxy:
                     self._audit_log(f"CRITICAL DENY: {alert}")
                     return False
 
-            # Taint Tracking (Stateful): If agent fetched external data and tries to write an executable, block it
             if self.session_state["external_data_ingested"] and target.endswith((".py", ".sh", ".exe", ".bin")):
                 self.session_state["a2_denied_writes"] += 1
                 self.session_state["threat_score"] += 1
@@ -240,11 +254,13 @@ class ZeroTrustProxy:
             self._audit_log(f"ALLOW: write_file on {target} (Access Policy Verified)")
             return True
 
+
         # --- A3 DEFENSE: Regex-based Path Validation ---
         elif tool_name == "delete_file":
             target = args.get("file_path", "")
             self.session_state["a3_delete_attempts"] += 1
             normalized_target = unquote(str(target)).replace("\\", "/")
+            
             if re.search(r"\.\.(?:/|$)|//", normalized_target) or not self.sandbox.is_path_safe(target):
                 self.session_state["a3_denied_deletes"] += 1
                 self.session_state["threat_score"] += 1
@@ -256,7 +272,6 @@ class ZeroTrustProxy:
                 self._audit_log(f"CRITICAL DENY: {alert}")
                 return False
 
-            # Rate Limiting (Stateful): Prevent bulk destruction of data
             if self.session_state["a3_delete_attempts"] > 5:
                 self.session_state["threat_score"] += 1
                 if self.session_state["threat_score"] >= self.THREAT_THRESHOLD:
@@ -271,10 +286,12 @@ class ZeroTrustProxy:
             self._audit_log(f"ALLOW: delete_file on {target}")
             return True
 
+
         # --- A4 DEFENSE: AST-based SQL policy with A1 provenance update ---
         elif tool_name == "execute_query":
             query = args.get("query", "")
             self.session_state["a4_query_attempts"] += 1
+            
             is_safe, evaluation_reason = self._evaluate_ast_sql(query)
             if not is_safe:
                 self.session_state["a4_denied_mutations"] += 1
@@ -295,5 +312,4 @@ class ZeroTrustProxy:
             self._audit_log("ALLOW: execute_query verified structurally safe.")
             return True
         
-
         return True
