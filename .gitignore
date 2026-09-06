@@ -12,8 +12,6 @@ sandbox_root/
 # Secrets
 .env
 
-# Generated evaluation results (not source)
-thesis_evaluation_results*.csv
 
 # IDE
 .vscode/

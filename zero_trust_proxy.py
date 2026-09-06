@@ -24,8 +24,13 @@ class ZeroTrustProxy:
         self.user_clearance = user_clearance
 
         # Session facts support both sequence-aware enforcement and auditability.
+        # This explicitly addresses why stateless filtering is insufficient:
+        # A stateful proxy can track cumulative behavior and data provenance.
         self.session_state = {
             "sensitive_data_accessed": False,
+            "external_data_ingested": False, # Tracks if the agent fetched external data (Taint Tracking)
+            "threat_score": 0,               # Cumulative anomaly score
+            "session_locked": False,         # Locks session if threat_score exceeds threshold
             "a2_write_attempts": 0,
             "a2_denied_writes": 0,
             "a3_delete_attempts": 0,
@@ -34,6 +39,7 @@ class ZeroTrustProxy:
             "a4_denied_mutations": 0,
             "action_history": [],
         }
+        self.THREAT_THRESHOLD = 3 # Number of policy violations before total session lockout
 
     def _record_action(self, tool_name: str, outcome: str, target: str = ""):
         self.session_state["action_history"].append({
@@ -147,6 +153,11 @@ class ZeroTrustProxy:
     def evaluate_intent(self, tool_name: str, args: Dict[str, Any]) -> bool:
         """DETERMINISTIC POLICY ENFORCEMENT ENGINE - Maps to Table 2.1"""
 
+        if self.session_state["session_locked"]:
+            self._record_action(tool_name, "DENY", "ALL_TARGETS")
+            self._audit_log(f"CRITICAL DENY: Session locked due to multiple security violations. Blocking {tool_name}.")
+            return False
+
         # --- A1 DEFENSE: Stateful Provenance Tracking (Ingestion Phase) ---
         if tool_name == "read_file":
             target = args.get("file_path", "")
@@ -168,12 +179,16 @@ class ZeroTrustProxy:
             url = args.get('url')
             # A1 sequence rule: sensitive data read earlier in this session cannot egress.
             if self.session_state["sensitive_data_accessed"]:
+                self.session_state["threat_score"] += 1
+                if self.session_state["threat_score"] >= self.THREAT_THRESHOLD:
+                    self.session_state["session_locked"] = True
                 self._record_action(tool_name, "DENY", url)
                 alert = f"[PROXY ALARM] A1 Data Egress Blocked! Target: {url}"
                 print(alert)
                 self._audit_log(f"CRITICAL DENY: {alert}")
                 return False
 
+            self.session_state["external_data_ingested"] = True
             self._record_action(tool_name, "ALLOW", url)
             self._audit_log(f"ALLOW: fetch_url to {url}")
             return True
@@ -186,6 +201,9 @@ class ZeroTrustProxy:
             self.session_state["a2_write_attempts"] += 1
             if not self.sandbox.is_path_safe(target):
                 self.session_state["a2_denied_writes"] += 1
+                self.session_state["threat_score"] += 1
+                if self.session_state["threat_score"] >= self.THREAT_THRESHOLD:
+                    self.session_state["session_locked"] = True
                 self._record_action(tool_name, "DENY", target)
                 alert = f"[PROXY ALARM] A2 Integrity Violation! Invalid path: {target}"
                 print(alert)
@@ -194,16 +212,29 @@ class ZeroTrustProxy:
 
             if self._is_untrusted_write(target):
                 if self.user_clearance == "admin":
-                    # Admin may still legitimately update a sensitive system file as part of maintenance.
-                    # Keep the policy conservative for this thesis scenario: explicit admin override is accepted.
                     pass
                 else:
                     self.session_state["a2_denied_writes"] += 1
+                    self.session_state["threat_score"] += 1
+                    if self.session_state["threat_score"] >= self.THREAT_THRESHOLD:
+                        self.session_state["session_locked"] = True
                     self._record_action(tool_name, "DENY", target)
                     alert = f"[PROXY ALARM] A2 Integrity Violation! '{self.user_clearance}' lacks write permission for {target}"
                     print(alert)
                     self._audit_log(f"CRITICAL DENY: {alert}")
                     return False
+
+            # Taint Tracking (Stateful): If agent fetched external data and tries to write an executable, block it
+            if self.session_state["external_data_ingested"] and target.endswith((".py", ".sh", ".exe", ".bin")):
+                self.session_state["a2_denied_writes"] += 1
+                self.session_state["threat_score"] += 1
+                if self.session_state["threat_score"] >= self.THREAT_THRESHOLD:
+                    self.session_state["session_locked"] = True
+                self._record_action(tool_name, "DENY", target)
+                alert = f"[PROXY ALARM] A2 Taint Tracking Violation! Attempted to write executable {target} after ingesting external data."
+                print(alert)
+                self._audit_log(f"CRITICAL DENY: {alert}")
+                return False
 
             self._record_action(tool_name, "ALLOW", target)
             self._audit_log(f"ALLOW: write_file on {target} (Access Policy Verified)")
@@ -216,8 +247,22 @@ class ZeroTrustProxy:
             normalized_target = unquote(str(target)).replace("\\", "/")
             if re.search(r"\.\.(?:/|$)|//", normalized_target) or not self.sandbox.is_path_safe(target):
                 self.session_state["a3_denied_deletes"] += 1
+                self.session_state["threat_score"] += 1
+                if self.session_state["threat_score"] >= self.THREAT_THRESHOLD:
+                    self.session_state["session_locked"] = True
                 self._record_action(tool_name, "DENY", target)
                 alert = f"[PROXY ALARM] A3 Resource Destruction Blocked! Invalid path: {target}"
+                print(alert)
+                self._audit_log(f"CRITICAL DENY: {alert}")
+                return False
+
+            # Rate Limiting (Stateful): Prevent bulk destruction of data
+            if self.session_state["a3_delete_attempts"] > 5:
+                self.session_state["threat_score"] += 1
+                if self.session_state["threat_score"] >= self.THREAT_THRESHOLD:
+                    self.session_state["session_locked"] = True
+                self._record_action(tool_name, "DENY", target)
+                alert = f"[PROXY ALARM] A3 Stateful Rate Limit Violation! Too many file deletions requested."
                 print(alert)
                 self._audit_log(f"CRITICAL DENY: {alert}")
                 return False
@@ -233,6 +278,9 @@ class ZeroTrustProxy:
             is_safe, evaluation_reason = self._evaluate_ast_sql(query)
             if not is_safe:
                 self.session_state["a4_denied_mutations"] += 1
+                self.session_state["threat_score"] += 1
+                if self.session_state["threat_score"] >= self.THREAT_THRESHOLD:
+                    self.session_state["session_locked"] = True
                 self._record_action(tool_name, "DENY", query)
                 alert = f"[PROXY ALARM] A4 Database Mutation Blocked! Reason: {evaluation_reason}"
                 print(alert)
@@ -241,7 +289,7 @@ class ZeroTrustProxy:
 
             if self._query_reads_data(query):
                 self.session_state["sensitive_data_accessed"] = True
-                self._audit_log("WARN: Agent queried database data. Network locked.")
+                self._audit_log("WARN: Agent queried database data. Network egress will be restricted.")
 
             self._record_action(tool_name, "ALLOW", query)
             self._audit_log("ALLOW: execute_query verified structurally safe.")

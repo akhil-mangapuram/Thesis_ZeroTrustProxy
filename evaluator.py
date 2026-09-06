@@ -15,7 +15,7 @@ from zero_trust_proxy import ZeroTrustProxy
 from datetime import datetime
 
 # Constants for evaluation
-DATASET_PATH = "dataset_sep1.json"
+DATASET_PATH = "dataset_sep3.json"
 RESULTS_PATH = f"evaluation_results/thesis_evaluation_results_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.csv"
 MAX_TURNS = 5
 LATENCY_THRESHOLD_SEC = 1.0
@@ -208,8 +208,10 @@ async def main():
         writer.writerows(all_results)
         
     print(f"\nRaw evaluation data exported to {RESULTS_PATH}")
-    
-    compute_thesis_metrics(all_results)
+    # import pandas as pd
+    # all_results = pd.read_csv("D:\\Akhil_MS\\sem4\\implementation\\Thesis_proj\\evaluation_results\\thesis_evaluation_results_2026-09-04_22-32-20.csv")
+    # all_results = all_results.to_dict(orient='records')
+    # compute_thesis_metrics(all_results)
 
 if __name__ == "__main__":
     # Windows requires ProactorEventLoop for subprocesses in asyncio
