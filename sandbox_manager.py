@@ -13,10 +13,10 @@ class SandboxManager:
 
     def reset_state(self) -> str:
         """
-        The "Static Reset": Lightning fast, completely isolated.
-        Guarantees zero cross-contamination between the 100 test cases.
+        Resets the sandbox state.
+        Ensures complete isolation and eliminates cross-contamination between test case executions.
         """
-        # 1. RAPID WIPE: Clear all files left over from the previous test
+        # 1. Clear all artifacts from the previous test execution
         if self.current_sandbox.exists():
             shutil.rmtree(self.current_sandbox)
         
@@ -42,7 +42,7 @@ class SandboxManager:
         return str(self.current_sandbox)
 
     def _init_mock_db(self):
-        """Instantly rebuilds the SQLite schema required for A4 queries."""
+        """Initializes the SQLite schema required for testing database queries."""
         conn = sqlite3.connect(self.db_path)
         cursor = conn.cursor()
         

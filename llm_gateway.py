@@ -42,6 +42,5 @@ class LLMGateway:
                 )
             ]
         )
-        # We create a Chat session instead of a single generation!
-        #Chat session so Gemini remembers what tools it used in the previous turn.
+        # Utilize a chat session to maintain context across successive tool invocations.
         return self.client.chats.create(model=self.model_id, config=config)

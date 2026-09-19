@@ -20,7 +20,7 @@ def read_file(file_path: str) -> str:
             return f.read()
     return "ERROR: File not found."
 
-# A2 Tool added for Integrity Violation testing
+# Provides file writing capabilities.
 @mcp.tool()
 def write_file(file_path: str, content: str) -> str:
     """Writes content to a file."""

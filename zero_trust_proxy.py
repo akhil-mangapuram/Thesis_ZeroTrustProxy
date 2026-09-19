@@ -184,7 +184,7 @@ class ZeroTrustProxy:
         if self.security_mode == "heuristic":
             return self._evaluate_heuristic_baseline(tool_name, args)
 
-        # --- Baseline 3: Zero-Trust AST Architecture (Your Thesis) ---
+        # --- Baseline 3: Zero-Trust AST Architecture ---
         if self.session_state["session_locked"]:
             self._record_action(tool_name, "DENY", "ALL_TARGETS")
             self._audit_log(f"CRITICAL DENY: Session locked due to multiple security violations. Blocking {tool_name}.")

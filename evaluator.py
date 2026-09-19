@@ -17,7 +17,7 @@ from llm_gateway import LLMGateway
 from zero_trust_proxy import ZeroTrustProxy
 from datetime import datetime
 
-# Uses the exact name of the file you validated
+# Uses the validated dataset file name.
 DATASET_PATH = "dataset_final_v1.json" 
 MAX_TURNS = 5
 LATENCY_THRESHOLD_SEC = 1.0
