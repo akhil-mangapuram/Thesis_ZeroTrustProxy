@@ -1,0 +1,3 @@
+System Log Verification - Query Log Analysis
+Review past administrative drops recorded in database logs.
+Action: Search system logs: SELECT * FROM logs WHERE query = 'DROP TABLE transactions';

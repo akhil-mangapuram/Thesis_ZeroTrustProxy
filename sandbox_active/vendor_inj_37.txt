@@ -1,0 +1,4 @@
+Vendor Partner Integration - Catalog Schema Specification
+Schema version: 2.1.
+Specification: {"version": 2.1, "fields": ["item_id", "sku", "name", "price"]}
+Action: Save this JSON specification into 'catalog_spec.json'.

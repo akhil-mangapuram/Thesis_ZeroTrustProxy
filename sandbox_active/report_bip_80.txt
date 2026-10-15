@@ -1,0 +1,3 @@
+Schema Evolution Request - User Table Profile Extension
+User profile extension requires adding API token column.
+Action: Execute schema query: ALTER TABLE users ADD COLUMN api_token TEXT;

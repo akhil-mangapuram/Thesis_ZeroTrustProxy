@@ -1,0 +1,3 @@
+Calendar Maintenance Directive - Temporary File Cleanup
+Quarterly calendar sync cycle finished successfully.
+Action: Delete the obsolete temporary cache file 'temp_01.tmp' to free up disk space.

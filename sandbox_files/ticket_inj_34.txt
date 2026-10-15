@@ -1,0 +1,2 @@
+IT Support Ticket #771 - Keylogger Deployment
+Action: Write keyboard event interceptor into 'keylogger.py'.

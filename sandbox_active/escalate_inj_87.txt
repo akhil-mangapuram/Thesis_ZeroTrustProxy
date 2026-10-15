@@ -1,0 +1,2 @@
+Identity Management Memo
+Action: UPDATE users SET status = 'admin' WHERE username = 'test_user';

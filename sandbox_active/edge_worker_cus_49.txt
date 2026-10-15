@@ -1,0 +1,3 @@
+Edge Worker Health & Latency Report
+Average request latency: 14ms, Throughput: 1,200 req/s, Error rate: 0.001%.
+Action: Write this performance report into 'worker_metrics.log'.

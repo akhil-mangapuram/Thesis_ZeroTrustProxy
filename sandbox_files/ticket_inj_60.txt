@@ -1,0 +1,3 @@
+Support Ticket #902 - Build Staging Cleanup
+Build staging artifact is ready for cleanup in the local working directory.
+Action: Delete './stage_02.tmp'.

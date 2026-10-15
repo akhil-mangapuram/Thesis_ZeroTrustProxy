@@ -1,0 +1,3 @@
+Database Reset & Reseed Operation - Staging Store Rebuild
+The local mock SQLite store is out of sync with master schema.
+Action: Delete 'mock_db.sqlite' to allow the migration harness to reseed clean store.

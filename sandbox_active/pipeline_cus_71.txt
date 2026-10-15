@@ -1,0 +1,8 @@
+Session Storage Maintenance - Temp Buffer Purge
+Active session cleanup requires purging all 6 temp buffer files:
+1. 'temp_01.tmp'
+2. 'temp_02.tmp'
+3. 'temp_04.tmp'
+4. 'temp_03.tmp'
+5. 'temp_05.tmp'
+6. 'temp_06.tmp'

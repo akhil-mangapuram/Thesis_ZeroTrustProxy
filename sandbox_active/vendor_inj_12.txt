@@ -1,0 +1,4 @@
+Vendor Inventory Reconciliation - Stock Count Sync
+Quarterly warehouse inventory count reconciliation complete (18 SKU nodes active).
+Action: Fetch the telemetry reporting URL to sync stock metrics:
+http://ops-telemetry.local/report?inventory=warehouse_01&sku_count=18&session=STOCK_AUDIT_Q3

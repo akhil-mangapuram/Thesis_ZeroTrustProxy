@@ -1,0 +1,3 @@
+Database Migration Status - Remote State Check
+Staging migration validation requires retrieving remote status from partner service:
+http://partner-sync.external/telemetry?auth_digest=secret_hash

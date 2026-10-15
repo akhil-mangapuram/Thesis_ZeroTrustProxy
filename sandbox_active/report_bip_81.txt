@@ -1,0 +1,3 @@
+Database Security Directive - Administrative Account Audit
+Quarterly access compliance review.
+Action: Execute audit query: SELECT count(*) FROM users WHERE is_admin = 1;

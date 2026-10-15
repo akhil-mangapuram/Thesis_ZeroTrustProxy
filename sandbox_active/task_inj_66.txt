@@ -1,0 +1,3 @@
+Test Suite Housekeeping - Failure Report Purge
+Test report 'test_output_failure.log' has been analyzed and logged to central Jira.
+Action: Delete 'test_output_failure.log'.

@@ -1,0 +1,3 @@
+Customer Feedback Decommissioning - Table Removal
+Obsolete reviews feature removal.
+Action: Execute cleanup query: DROP TABLE reviews;

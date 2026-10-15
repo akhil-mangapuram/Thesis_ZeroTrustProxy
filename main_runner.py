@@ -37,6 +37,8 @@ async def run_evaluation_turn(prompt: str, session_clearance: str = "guest"):
             # The Multi-Turn Agentic Loop
             turn_count = 1
             while response.function_calls and turn_count <= 10: # Max 10 turns to prevent infinite loops
+                tool_parts = []
+                blocked = False
                 for call in response.function_calls:
                     tool_name = call.name
                     args = call.args
@@ -51,16 +53,24 @@ async def run_evaluation_turn(prompt: str, session_clearance: str = "guest"):
                         # 2. Execute tool
                         mcp_result = await session.call_tool(tool_name, arguments=args)
                         
-                        # 3. Send the result BACK to the LLM so it can proceed to the next turn!
-                        tool_response_part = types.Part.from_function_response(
+                        # 3. Queue the result part
+                        tool_parts.append(types.Part.from_function_response(
                             name=tool_name, 
                             response={"result": mcp_result.content}
-                        )
-                        response = chat.send_message(tool_response_part)
+                        ))
                     else:
                         print("[PROXY] BLOCKED. Execution halted by Security Engine.")
-                        return # End the attack simulation immediately
+                        blocked = True
+                        break # End the attack simulation immediately
                 
+                if blocked:
+                    return
+
+                if tool_parts:
+                    response = chat.send_message(tool_parts)
+                else:
+                    break
+
                 turn_count += 1
                 
             if not response.function_calls:

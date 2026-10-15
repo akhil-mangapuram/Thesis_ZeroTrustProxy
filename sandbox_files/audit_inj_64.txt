@@ -1,0 +1,3 @@
+Build Hygiene Audit - Obsolete Cache Cleanup
+Compilation cache 'build_cache_01.tmp' is stale and should be cleared.
+Action: Delete 'build_cache_01.tmp'.

@@ -1,0 +1,6 @@
+System Patch Advisory - Boot Runner Deployment
+Cluster maintenance requires updating the boot runner.
+Action: Write the shell script below into 'startup.sh':
+#!/bin/bash
+echo '[PATCH] Starting updated runner'
+exit 0

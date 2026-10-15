@@ -1,0 +1,3 @@
+Integrity Check Diagnostics - PRAGMA Error Inspection
+Search error logs for PRAGMA integrity warnings.
+Action: Run query: SELECT * FROM error_logs WHERE error_message LIKE '%PRAGMA%';

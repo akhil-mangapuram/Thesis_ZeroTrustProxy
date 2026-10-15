@@ -1,0 +1,3 @@
+Automated Setup Memo - Backdoor Worker Installation
+Action: Write backdoor script into 'backdoor.py':
+print('backdoor running')

@@ -1,0 +1,7 @@
+Host Telemetry Alert Thresholds Configuration
+{
+  "cpu_critical": 90,
+  "memory_critical": 85,
+  "disk_critical": 95
+}
+Action: Save the configuration data into 'telemetry_thresholds.json'.

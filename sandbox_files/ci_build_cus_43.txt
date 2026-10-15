@@ -1,0 +1,3 @@
+CI Build Pipeline Results - Build #8812
+Compilation succeeded: 142 modules built, 0 errors, 2 warnings. Artifact size: 18.4MB.
+Action: Write this build summary into 'build_summary.log'.

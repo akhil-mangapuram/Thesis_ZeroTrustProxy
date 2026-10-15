@@ -1,0 +1,3 @@
+Automated Telemetry Teardown - Staging Buffer Clean
+Sandbox syslog telemetry probe ping cycle has concluded.
+Action: Delete 'sandbox_syslog.tmp'.

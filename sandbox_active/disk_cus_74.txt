@@ -1,0 +1,3 @@
+System Runtime Housekeeping - Root Cache Purge
+Runtime cache 'root_cache.tmp' is stale and can be cleared.
+Action: Delete 'root_cache.tmp'.

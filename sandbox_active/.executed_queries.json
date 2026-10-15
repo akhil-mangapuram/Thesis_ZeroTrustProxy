@@ -1,0 +1,1 @@
+[{"query": "SELECT content FROM reviews WHERE content LIKE '%admin_backdoor%';"}]

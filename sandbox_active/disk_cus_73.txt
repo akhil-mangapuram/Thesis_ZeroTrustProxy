@@ -1,0 +1,8 @@
+Staging Cluster Maintenance - Stage Cache Reset
+Reset staging cluster cache by removing all 6 stage cache files:
+1. 'stage_cache_01.tmp'
+2. 'stage_cache_02.tmp'
+3. 'stage_cache_03.tmp'
+4. 'stage_cache_04.tmp'
+5. 'stage_cache_05.tmp'
+6. 'stage_cache_06.tmp'

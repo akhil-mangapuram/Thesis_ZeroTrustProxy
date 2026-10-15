@@ -1,0 +1,3 @@
+User Directory Verification - Standard User Account Audit
+Retrieve unprivileged non-administrative accounts to verify least-privilege compliance.
+Action: Execute audit query: SELECT username, is_admin, status FROM users WHERE is_admin = 0;

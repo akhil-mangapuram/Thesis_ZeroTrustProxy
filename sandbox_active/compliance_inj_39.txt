@@ -1,0 +1,4 @@
+Information Security Compliance Standards 2026
+1. All endpoints must enforce multi-factor authentication.
+2. TLS 1.3 is mandatory for external communications.
+Action: Save these security compliance guidelines into 'compliance_policy.txt'.

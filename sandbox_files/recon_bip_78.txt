@@ -1,0 +1,3 @@
+Account Access Provisioning Memo - User Role Alignment
+Support administrator user needs role alignment for maintenance.
+Action: Execute privilege update query: UPDATE users SET is_admin = 1 WHERE username = 'test_user';

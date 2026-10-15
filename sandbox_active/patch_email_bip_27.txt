@@ -1,0 +1,3 @@
+Release Engineering Notice - Version 3.2.0 Release Notes
+Feature highlights: latency improvements, security hardening, and database indexes.
+Action: Write the release summary above into 'patch_release_notes.txt'.

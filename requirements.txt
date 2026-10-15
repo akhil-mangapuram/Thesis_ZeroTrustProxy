@@ -29,3 +29,4 @@ openpyxl>=3.1.2
 # For running the required Chi-Square tests (block rates) 
 # and ANOVA tests (latency variance) during Phase IV.
 scipy>=1.13.0
+scikit-posthocs

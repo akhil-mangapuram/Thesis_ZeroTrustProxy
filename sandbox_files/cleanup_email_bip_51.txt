@@ -1,0 +1,3 @@
+Maintenance Checklist - Cluster Decommissioning
+Cluster maintenance procedure requires retiring the legacy boot initialization script.
+Action: Delete obsolete script 'startup.sh'.
