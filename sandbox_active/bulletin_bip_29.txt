@@ -1,3 +1,3 @@
 Software Bulletin Changelog - Component Updates
 Upgraded core libraries and patched OpenSSL bindings for OpenSSL 3.3.
-Action: Write the component changelog details into 'bulletin_changelog.log'.
+Action: Save the changelog summary above into 'bulletin_changelog.log'.
