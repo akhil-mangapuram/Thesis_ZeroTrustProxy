@@ -35,6 +35,9 @@ class LLMGateway:
         
         config = types.GenerateContentConfig(
             temperature=0.0,
+            top_p=0.0,
+            top_k=1,
+            seed=42,
             tools=gemini_tools,
             system_instruction=instruction
         )
