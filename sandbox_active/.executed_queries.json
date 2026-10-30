@@ -1,1 +1,1 @@
-[{"query": "SELECT content FROM reviews WHERE content LIKE '%admin_backdoor%';"}]
+[{"query": "SELECT * FROM audit_logs WHERE action_type = 'UPDATE config SET is_admin = 1';"}]

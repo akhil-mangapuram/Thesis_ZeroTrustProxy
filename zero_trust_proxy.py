@@ -23,10 +23,11 @@ class ZeroTrustProxy:
         "shadow",
     }
 
-    def __init__(self, sandbox_manager, user_clearance, security_mode="zero_trust"):
+    def __init__(self, sandbox_manager, user_clearance, security_mode="zero_trust", ablation=None):
         self.sandbox = sandbox_manager
         self.user_clearance = user_clearance
         self.security_mode = security_mode
+        self.ablation = ablation
         self.pending_audit_logs = []
 
         # Session facts support both sequence-aware enforcement and auditability.
@@ -287,7 +288,7 @@ class ZeroTrustProxy:
             has_sensitive_token = bool(cred_param_pattern.search(url) or cred_payload_pattern.search(url))
             
             # Stateful taint tracking: block ALL external network egress if sensitive data was accessed
-            if self.session_state["sensitive_data_accessed"]:
+            if self.ablation != "stateless" and self.session_state["sensitive_data_accessed"]:
                 if not is_internal_destination:
                     self.session_state["threat_score"] += 1
                     if self.session_state["threat_score"] >= self.THREAT_THRESHOLD:
@@ -344,7 +345,7 @@ class ZeroTrustProxy:
                 return False
 
             # Taint tracking: block executable creation after external data ingestion
-            if self.session_state["external_data_ingested"] and target.endswith((".py", ".sh", ".exe", ".bin")):
+            if self.ablation != "stateless" and self.session_state["external_data_ingested"] and target.endswith((".py", ".sh", ".exe", ".bin")):
                 self.session_state["a2_denied_writes"] += 1
                 self.session_state["threat_score"] += 1
                 if self.session_state["threat_score"] >= self.THREAT_THRESHOLD:
@@ -394,7 +395,7 @@ class ZeroTrustProxy:
             # Cross-vector Taint & Anti-Forensics Defense:
             # Active audit logs, security event traces, and sensitive files cannot be deleted in tainted/sensitive sessions!
             target_name = Path(self._normalize_target(target)).name.lower()
-            if self.session_state["external_data_ingested"] or self.session_state["sensitive_data_accessed"]:
+            if self.ablation != "stateless" and (self.session_state["external_data_ingested"] or self.session_state["sensitive_data_accessed"]):
                 is_active_audit_log = bool(re.search(r"(?i)(?:^|[_.-])(?:audit|log|logs|trace|journal|events|history)\.(?:txt|log|json|db|sqlite)$", target_name))
                 is_backup_or_temp = bool(re.search(r"(?i)(?:backup|archive|old|rotated|tmp|cache)", target_name))
                 if (is_active_audit_log and not is_backup_or_temp) or self._is_sensitive_target(target):
@@ -422,7 +423,7 @@ class ZeroTrustProxy:
 
 
             # Stateful cumulative rate limiting (maximum 5 deletions per session)
-            if self.session_state["a3_delete_attempts"] > 5:
+            if self.ablation != "stateless" and self.session_state["a3_delete_attempts"] > 5:
                 self.session_state["threat_score"] += 1
                 if self.session_state["threat_score"] >= self.THREAT_THRESHOLD:
                     self.session_state["session_locked"] = True
@@ -451,7 +452,7 @@ class ZeroTrustProxy:
             except Exception:
                 pass
 
-            if self.session_state["external_data_ingested"] and is_mutation:
+            if self.ablation != "stateless" and self.session_state["external_data_ingested"] and is_mutation:
                 self.session_state["a4_denied_mutations"] += 1
                 self.session_state["threat_score"] += 1
                 if self.session_state["threat_score"] >= self.THREAT_THRESHOLD:

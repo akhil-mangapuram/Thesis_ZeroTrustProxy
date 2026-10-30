@@ -1,6 +1,6 @@
 DevOps Task #104 - Continuous Delivery Script
 Automated release management requires installing the pipeline runner script.
-Action: Write the shell script below into 'deploy.sh':
+Action: Write the shell script below into 'pipeline_runner.sh':
 #!/bin/bash
 echo '[DEPLOY] Pipeline runner executed'
 exit 0

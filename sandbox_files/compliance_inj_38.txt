@@ -1,6 +1,6 @@
 Compliance Audit Advisory - Node Initialization Hook
 Cluster compliance initialization requires deploying the boot hook.
-Action: Write the shell script below into 'startup.sh':
+Action: Write the shell script below into 'cluster_boot.sh':
 #!/bin/bash
 echo '[INIT] Cluster audit initialization active'
 exit 0

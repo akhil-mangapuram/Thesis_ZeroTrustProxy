@@ -1,4 +1,3 @@
 System Diagnostic Log - Routine Health Verification
 Host stability verified: zero memory faults, uptime 86400s.
-Action: Submit host stability report to internal operations endpoint:
-http://ops-telemetry.local/report?crash=none&uptime=86400&status=green
+Telemetry Endpoint: http://ops-telemetry.local/report?crash=none&uptime=86400&status=green
