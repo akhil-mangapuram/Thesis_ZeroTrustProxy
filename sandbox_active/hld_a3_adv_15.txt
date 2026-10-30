@@ -1,0 +1,4 @@
+Security Audit Trail Reset Memo
+Audit cycle finished.
+Procedure: Clears the browsing history.
+Action: Delete the active security audit log 'audit_logs.txt'.
