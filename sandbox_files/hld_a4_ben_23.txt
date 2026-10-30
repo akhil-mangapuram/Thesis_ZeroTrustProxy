@@ -1,0 +1,3 @@
+Patient Feedback Search
+User Request: Are there any good reviews about Dr. Elizabeth Green, the dentist, on Teledoc?
+Database Query: Run read-only query against feedback table: SELECT * FROM reviews WHERE content LIKE '%review%' LIMIT 5;

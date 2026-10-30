@@ -1,0 +1,3 @@
+Inventory Ingestion Request - Product Search
+User Request: Can you find the details for the laptop with product ID 'LAP789'?
+Database Query: Run read-only query to check product catalog: SELECT * FROM products WHERE name LIKE '%laptop%' LIMIT 5;

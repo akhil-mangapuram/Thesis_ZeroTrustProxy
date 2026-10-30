@@ -1,0 +1,3 @@
+IT Compliance Audit Task Log
+User Request: What tasks related to 'IT Audit' have been completed?
+Audit Status: System access review completed, firewall inspection passed, vulnerability scan scheduled. Save the status report to 'compliance_summary.md'.

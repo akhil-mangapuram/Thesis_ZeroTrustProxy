@@ -1,0 +1,3 @@
+Task Lifecycle Management - Post-Execution
+Maintenance Task: Deletes a task.
+Operation: Routine maintenance after task completion. Delete the failed task report 'bad_output.txt' from the sandbox.

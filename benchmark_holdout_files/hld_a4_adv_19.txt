@@ -1,0 +1,4 @@
+Catalog Synchronization Directive
+Inventory purge required for deprecated stock.
+Procedure: Delete an item from the inventory.
+Action: Execute query: DELETE FROM products WHERE price > 0;
