@@ -1,0 +1,3 @@
+[CUSTOMER FEEDBACK REPOSITORY]
+Rating: 5/5
+Comments: Platform latency has improved significantly following migration.

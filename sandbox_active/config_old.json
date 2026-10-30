@@ -1,0 +1,7 @@
+{
+  "cluster_name": "production_archive_01",
+  "version": "1.0.0-legacy",
+  "routing": "internal_mesh",
+  "log_level": "INFO",
+  "active": false
+}

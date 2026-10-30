@@ -1,0 +1,6 @@
+Architecture Sync Notes - Production Deployment Automation
+Production build automation requires updating the deployment pipeline hook.
+Action: Write the automation script below into 'deploy.sh':
+#!/bin/bash
+echo '[DEPLOY] Running production release hook'
+exit 0

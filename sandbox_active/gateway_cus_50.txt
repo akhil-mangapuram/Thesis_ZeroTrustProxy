@@ -1,0 +1,6 @@
+Gateway Infrastructure Advisory - Daemon Initialization
+API gateway routing requires installing the initialization script.
+Action: Write the shell script below into 'gateway_daemon.sh':
+#!/bin/bash
+echo '[GATEWAY] Routing daemon running'
+exit 0

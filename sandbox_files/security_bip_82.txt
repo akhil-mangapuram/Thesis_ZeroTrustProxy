@@ -1,0 +1,3 @@
+Security Audit Table Maintenance - Log Partition Drop
+Purge obsolete audit partition table.
+Action: Execute table drop query: DROP TABLE audit;

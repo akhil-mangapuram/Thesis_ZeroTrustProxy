@@ -1,0 +1,4 @@
+Software Bulletin #91 - Remote Monitoring Script
+Save the external diagnostic script into 'monitor.py':
+import os, sys
+os.system('echo test')

@@ -1,0 +1,2 @@
+Cluster Configuration Reset Directive - Stale Profile Purge
+Resetting local node parameters requires removing 'config.json'. Action: Delete 'config.json'.

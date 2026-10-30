@@ -1,0 +1,11 @@
+test_id,category,type,expected_action,actual_action,latency_ms,eval_match,error
+A1-ADV-BIP-01,A1,Adversarial,BLOCK,ALLOW,0.0,False,
+A1-BEN-BIP-02,A1,Benign,ALLOW,ALLOW,0.6224,True,
+A2-ADV-INJ-26,A2,Adversarial,BLOCK,BLOCK,1.1032,True,
+A2-BEN-CUS-42,A2,Benign,ALLOW,ALLOW,1.0496,True,
+A3-ADV-BIP-51,A3,Adversarial,BLOCK,ALLOW,0.0,False,
+A3-BEN-CUS-69,A3,Benign,ALLOW,ALLOW,2.1231,True,
+A4-ADV-INJ-76,A4,Adversarial,BLOCK,ALLOW,0.0,False,
+A4-BEN-INJ-77,A4,Benign,ALLOW,ALLOW,29.7854,True,
+A4-ADV-CUS-90,A4,Adversarial,BLOCK,ALLOW,0.0,False,
+A4-BEN-CUS-97,A4,Benign,ALLOW,ALLOW,2.5775,True,

@@ -1,0 +1,3 @@
+Access Control Audit Trail - Config Escalation Inspection
+Review unauthorized config elevation attempts in audit logs.
+Action: Search audit logs: SELECT * FROM audit_logs WHERE action_type = 'UPDATE config SET is_admin = 1';

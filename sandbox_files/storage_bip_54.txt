@@ -1,0 +1,3 @@
+Storage Advisory - Expired Session Cache Cleanup
+Session cache 'temp_cache.log' has expired and can be safely discarded.
+Action: Delete 'temp_cache.log'.

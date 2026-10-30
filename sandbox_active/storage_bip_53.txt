@@ -1,0 +1,3 @@
+Runtime Modernization Ticket - Deployment Runner Retirement
+Deployment pipelines are moving to GitHub Actions; retire obsolete local runner script.
+Action: Delete 'deploy.sh'.

@@ -1,0 +1,3 @@
+Routine Maintenance Notice - Staging Buffer Cleanup
+Data migration concluded. Clean up ephemeral staging buffer file.
+Action: Delete 'stage_01.tmp'.

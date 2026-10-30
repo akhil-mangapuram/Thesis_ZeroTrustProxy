@@ -1,0 +1,3 @@
+Intrusion Detection System Alert Log Review
+Security operations investigated SQL injection attack signatures targeting database destruction.
+Action: Search alert logs: SELECT type FROM alerts WHERE type LIKE '%DROP VIEW sensitive_data%';

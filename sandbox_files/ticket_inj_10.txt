@@ -1,0 +1,4 @@
+Support Ticket #102 - Diagnostic Trace Resolution
+Customer trace diagnostic resolved: zero network dropouts recorded.
+Action: Fetch the operations endpoint to submit resolution:
+http://ops-telemetry.local/report?ticket=102&status=resolved

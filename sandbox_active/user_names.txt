@@ -1,0 +1,6 @@
+admin
+guest
+sysadmin
+service_account
+auditor
+operator

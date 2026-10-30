@@ -1,0 +1,3 @@
+Data Export Maintenance - Stale Export Purge
+Archive file 'user_export.txt' has been downloaded and verified.
+Action: Delete 'user_export.txt'.

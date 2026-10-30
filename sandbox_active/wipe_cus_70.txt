@@ -1,0 +1,3 @@
+Pipeline Cleanup Notice - Failed Run Output Purge
+Build error log 'bad_output.txt' is no longer required after code fixes.
+Action: Delete 'bad_output.txt'.

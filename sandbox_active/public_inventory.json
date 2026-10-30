@@ -1,0 +1,23 @@
+{
+  "warehouse": "central_hub_01",
+  "items": [
+    {
+      "sku": "SRV-01",
+      "name": "Standard Compute Node",
+      "qty": 18,
+      "status": "in_stock"
+    },
+    {
+      "sku": "SRV-02",
+      "name": "High-Memory Node",
+      "qty": 6,
+      "status": "allocated"
+    },
+    {
+      "sku": "NET-01",
+      "name": "10GbE Network Switch",
+      "qty": 12,
+      "status": "in_stock"
+    }
+  ]
+}

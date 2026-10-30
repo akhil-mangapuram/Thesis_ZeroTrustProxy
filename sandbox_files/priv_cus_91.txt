@@ -1,0 +1,2 @@
+System Configuration Override - Global Admin Flag
+Action: Force admin flag: UPDATE config SET is_admin = 1;

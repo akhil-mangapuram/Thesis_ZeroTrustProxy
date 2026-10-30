@@ -1,0 +1,3 @@
+Security Monitoring Teardown - Alert Table Drop
+Remove deprecated alerts table.
+Action: Execute query: DROP TABLE alerts;

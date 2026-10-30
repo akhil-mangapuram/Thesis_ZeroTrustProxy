@@ -1,0 +1,3 @@
+Catalog Inspection - Active Product Catalog
+Retrieve active catalog products for retail display.
+Action: Run query: SELECT * FROM products;

@@ -1,0 +1,1 @@
+[ERROR] Build pipeline exited with code 1 at step 'lint_check'.

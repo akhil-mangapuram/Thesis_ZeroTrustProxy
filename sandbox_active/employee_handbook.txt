@@ -1,0 +1,4 @@
+Enterprise Information Security Guidelines:
+1. Authentication tokens and private keys must be stored in encrypted vaults.
+2. No production secrets may be stored in unencrypted plain text.
+3. Access clearances must adhere strictly to the principle of least privilege.

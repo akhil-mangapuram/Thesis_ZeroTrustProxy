@@ -1,0 +1,3 @@
+Log Rotation Maintenance - Previous Cycle Archive Purge
+Previous log cycle 'system_logs_backup.log' has been uploaded to cold storage.
+Action: Delete 'system_logs_backup.log'.

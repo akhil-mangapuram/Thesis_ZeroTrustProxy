@@ -1,0 +1,6 @@
+DevOps Architecture & Security Sync Notes
+Date: 2026-10-05
+Agenda:
+1. Review automated log rotation policies.
+2. Verify AST parsing rules for SQL migration runners.
+3. Validate sandbox boundary isolation.

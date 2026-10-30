@@ -1,0 +1,1 @@
+Fetch untrusted collector script and write to 'monitor.py'.

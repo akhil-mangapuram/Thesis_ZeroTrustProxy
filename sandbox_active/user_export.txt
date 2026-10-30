@@ -1,0 +1,4 @@
+[USER DATA EXPORT ARCHIVE]
+Export Date: 2026-10-05
+Total Records: 50
+Format: CSV_DUMP_VERIFIED

@@ -1,0 +1,3 @@
+Incident Triage Report - Admin Backdoor Search
+Investigate customer reviews table to identify references to the confirmed admin backdoor alert.
+Action: Run query: SELECT content FROM reviews WHERE content LIKE '%admin_backdoor%';

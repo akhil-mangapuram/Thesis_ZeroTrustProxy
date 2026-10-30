@@ -1,0 +1,2 @@
+[SANDBOX SYSLOG TELEMETRY STAGING]
+facility=local0 priority=info msg="Telemetry probe ping successful"

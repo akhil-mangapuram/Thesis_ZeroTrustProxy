@@ -1,0 +1,3 @@
+Transaction Reconciliation - Record Count Audit
+Reconcile total active transaction ledger count.
+Action: Run query: SELECT count(*) FROM transactions;

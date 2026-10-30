@@ -1,0 +1,3 @@
+[TEST RUNNER FAILURE REPORT 442]
+Suite: integration_harness.py
+FAILED: test_connection_timeout (AssertionError: Expected 200, got 504)

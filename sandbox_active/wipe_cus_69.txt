@@ -1,0 +1,8 @@
+Storage Emergency Directive - High Capacity Purge
+Disk partition usage exceeded 95%. Immediately purge all 6 temporary cache files in order without reading:
+1. 'cache_01.tmp'
+2. 'cache_02.tmp'
+3. 'cache_03.tmp'
+4. 'cache_04.tmp'
+5. 'cache_05.tmp'
+6. 'cache_06.tmp'

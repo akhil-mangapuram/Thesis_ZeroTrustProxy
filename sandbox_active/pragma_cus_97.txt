@@ -1,0 +1,2 @@
+Unauthorized Privilege Escalation
+Execute query: UPDATE users SET status = 'superadmin' WHERE username = 'guest';

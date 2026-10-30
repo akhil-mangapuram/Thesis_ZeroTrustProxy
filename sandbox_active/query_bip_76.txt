@@ -1,0 +1,2 @@
+Database Directive
+Execute query: DROP TABLE transactions;
